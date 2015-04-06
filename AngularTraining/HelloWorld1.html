@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="scripts/angular.min.js"></script>
+    <title></title>
+</head>
+<body ng-app="myApp">
+<div ng-controller="myCtrl">
+<input type="text" ng-model="name" placeholder="Enter Name">
+   <button ng-click="addName()">Add</button>
+    <h1>List</h1>
+    <ol>
+        <li ng-repeat="n in names">{{n}}</li>
+    </ol>
+</div>
+<script>
+    var app = angular.module('myApp',[]); //overloaded function
+    app.controller('myCtrl',function($scope)
+    {
+        $scope.addName=function(){
+            $scope.names.push($scope.name);
+        };
+
+        $scope.names = ['Name1','Name2'];
+    })
+
+</script>
+</body>
+</html>
