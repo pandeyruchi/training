@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="scripts/angular.js"></script>
+    <title></title>
+</head>
+<body ng-app="myServiceApp">
+<div ng-controller="myCtrl">
+<input type="text" ng-model="name" placeholder="Enter Name">
+   <button ng-click="addName()">Add</button>
+    {{test}}
+    <h1>List</h1>
+    <ol>
+        <li ng-repeat="n in names| myFilter">{{n}}</li>
+    </ol>
+    <h2>abc</h2>
+    <div my-list=""></div>
+</div>
+<div ng-controller="myCtrl">
+    <input type="text" ng-model="name" placeholder="Enter Name">
+    <button ng-click="addName()">Add</button>
+    <h1>Second List</h1>
+    <ol>
+        <li ng-repeat="n in names">{{n | capFilter}}</li>
+    </ol>
+    <h1>List with directives - Isolate scope</h1>
+    <my-element info="ABCD"></my-element>
+    <ol>
+        <li ng-repeat="n in names">
+            <my-element info="n"></my-element>
+        </li>
+    </ol>
+</div>
+<script>
+    var app = angular.module('myServiceApp',[]); //overloaded function
+
+    app.controller('myCtrl',['$scope','$filter','myService',function($scope,$filter,myService){
+        $scope.addName = function(){
+            myService.addName($scope.name);
+            $scope.test = $filter('capFilter')($scope.name);
+            $scope.name='';
+            $scope.ABCD="WERT";
+        }
+
+        $scope.names=myService.items;
+    }])
+
+    app.filter('myFilter',function(){
+        var filter = function(items)
+        {
+            var filtered = [];
+            for(var i=0;i<items.length;i++)
+            {
+                var item = items[i];
+                if(item.search(/day/)!=-1){
+                    filtered.push(item);
+                }
+            }
+            return filtered;
+        }
+        return filter;
+    })
+
+    app.filter('capFilter', function(){
+        return function(text)
+        {
+            return text.toString().toUpperCase();
+        }
+    })
+
+    app.factory('myService',function(){
+        return(
+        {
+            items: ['Name1','Name2'],
+            addName : function(name){
+                this.items.push(name);
+            }
+        }
+        )
+    })
+
+    app.directive('myElement', function(){
+        return{
+            scope:{
+                     text:'=info'
+            },
+            template:'<span>Item -{{text}}</span>'
+        }
+    });
+
+    app.directive('myList',function(){
+        return{
+            template:'<ol>\
+            <li ng-repeat="n in names" ng-bind="n"></li>\
+            </ol>'
+        };
+    })
+
+</script>
+</body>
+</html>
