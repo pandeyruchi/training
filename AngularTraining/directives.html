@@ -15,7 +15,7 @@
         <li ng-repeat="n in names| myFilter">{{n}}</li>
     </ol>
     <h2>abc</h2>
-    <div my-list=""></div>
+    <div my-list></div>
 </div>
 <div ng-controller="myCtrl">
     <input type="text" ng-model="name" placeholder="Enter Name">
@@ -40,10 +40,11 @@
             myService.addName($scope.name);
             $scope.test = $filter('capFilter')($scope.name);
             $scope.name='';
-            $scope.ABCD="WERT";
         }
 
         $scope.names=myService.items;
+
+        $scope.ABCD="WERT";
     }])
 
     app.filter('myFilter',function(){

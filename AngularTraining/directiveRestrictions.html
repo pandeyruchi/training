@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="scripts/angular.js"></script>
+    <title></title>
+</head>
+<body ng-App="customerApp">
+<div ng-controller="myCtrl">
+    <div customer-directive></div>
+</div>
+
+<script>
+    var app = angular.module('customerApp',[]);
+    app.controller('myCtrl',['$scope',function($scope){
+        $scope.customer={
+        name:'Ruchi Pandey',
+        address:'pune'
+    }
+    }]);
+
+    //we can create custom  control using directives which we can use at multiple places
+    app.directive('customerDirective',function(){
+        return{
+            restrict:'AEC',
+            templateUrl:'customer-address.html'
+        }
+    })
+</script>
+</body>
+</html>
